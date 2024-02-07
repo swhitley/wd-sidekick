@@ -13,39 +13,46 @@ chrome.sidePanel
 
 chrome.tabs.onUpdated
     .addListener(async (tabId, changeInfo, tab) => {
-      if (!(tab.id && changeInfo.status === 'complete')) return;
+      try {
+        if (!(tab.id && changeInfo.status === 'complete')) return;
 
-      if (await storage.getItem('panelOpen')) {
-        injectContentScript(tabId);
+        if (window.location.href.indexOf('workday') < 0) return;
+
+        if (await storage.getItem('panelOpen')) {
+          injectContentScript(tabId);
+        }
       }
+      catch (e) {}
     });
 
 chrome.runtime.onConnect.addListener(port => {
   port.onMessage.addListener(async msg => {
+    try {
+      if (port.name === PortNames.SidePanelPort) {
+        if (msg.type === 'init') {
+          await storage.setItem('panelOpen', true);
 
-    if (port.name === PortNames.SidePanelPort) {
-      if (msg.type === 'init') {
-        await storage.setItem('panelOpen', true);
+          port.onDisconnect.addListener(async () => {
+            await storage.setItem('panelOpen', false);
+          });
 
-        port.onDisconnect.addListener(async () => {
-          await storage.setItem('panelOpen', false);
-        });
+          const tab = await getCurrentTab();
 
-        const tab = await getCurrentTab();
+          if (!tab?.id) {
+            console.error("Couldn't get current tab");
+            return;
+          }
 
-        if (!tab?.id) {
-          console.error("Couldn't get current tab");
-          return;
+          injectContentScript(tab.id);
+
+          port.postMessage({
+            type: 'handle-init',
+            message: 'panel open'
+          });
         }
-
-        injectContentScript(tab.id);
-
-        port.postMessage({
-          type: 'handle-init',
-          message: 'panel open'
-        });
       }
     }
+    catch (e) {}
   });
 });
 

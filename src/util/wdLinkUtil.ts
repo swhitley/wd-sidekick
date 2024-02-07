@@ -4,7 +4,7 @@ export const wdLinkUpdate = (wdLink: WDLink) => {
     try {
       if (wdLink) {
         const uriArr = wdLink.url.split('/');
-        if (uriArr.length > 3) {
+        if (uriArr.length > 3 && wdLink.url.indexOf("workday") > 0) {
           wdLink.tenant = uriArr[3];
         }
 

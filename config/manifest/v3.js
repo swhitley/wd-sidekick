@@ -10,7 +10,7 @@ module.exports = {
   minimum_chrome_version: '114',
   action: { default_title: 'Click to open panel' },
   side_panel: { default_path: 'assets/sidePanel.html' },
-  host_permissions: ['*://*/*'],
+  host_permissions: ['*://*.workday.com/*', '*://*.myworkday.com/*', '*://*.workdaysuv.com/*', '*://*.myworkdaygov.com/*'],
   icons: { 128: 'assets/images/favicon.png' },
   background: { service_worker: 'background.js' },
   web_accessible_resources: [{

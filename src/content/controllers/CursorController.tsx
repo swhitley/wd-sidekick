@@ -20,9 +20,14 @@ class CursorController implements ContentProvider {
 
   handleMouseMove = (e:MouseEvent) => {    
     try {
-      let wdLink = { title: '', url: '', tenant: '', proxy: '', stopProxy: '', login: '' };
       var elem = document.elementFromPoint(e.clientX, e.clientY);
+
+      if (window.location.href.indexOf("workday") < 0) {
+        return;
+      }
+
       if (elem && elem.closest("[data-automation-widget=wd-popup]")) {
+        let wdLink = { title: '', url: '', tenant: '', proxy: '', stopProxy: '', login: '' };
         var popup = elem.closest("[data-automation-widget=wd-popup]");
         if (popup) {
           var copyText = popup.querySelector("[data-automation-id=copyText]");
