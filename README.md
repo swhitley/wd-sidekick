@@ -28,6 +28,9 @@ npm start
 
 ## Credits
 
+ERP Helper is compatible with Workday®
+It is not sponsored, affiliated with, or endorsed by Workday.
+
 - Chrome extension side panel starter
   - https://github.com/Debdut/browser-extension?tab=MIT-1-ov-file#readme
   - https://github.com/neemi-ai/chrome-extension-side-panel
@@ -35,4 +38,7 @@ npm start
 - Browser extension template
   - https://github.com/Debdut/browser-extension?tab=MIT-1-ov-file#readme
   - https://github.com/Debdut/browser-extension
+
+- Based on earlier ideas on Workday Community
+  - Hat tip to Venkatesh and Floyd for their earlier work on scripting the proxy task. https://lnkd.in/gVPf_tb9
 
