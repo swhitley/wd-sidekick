@@ -219,8 +219,8 @@ const SidePanelApp = () => {
               <PopoverArrow />
               <PopoverCloseButton />
               <PopoverHeader>Bookmark Preview</PopoverHeader>
-              <PopoverBody><OrderedList><ListItem>Right-click or Control-Click a Workday object link.</ListItem>
-                    <ListItem>Mouseover any link in the popup.</ListItem>
+              <PopoverBody><OrderedList><ListItem>Right-click or control-click a Workday object link.</ListItem>
+                    <ListItem>Hover over any link in the pop up.</ListItem>
                     <ListItem>Click Refresh (above) if the Bookmark Preview does not change.</ListItem>
                     <ListItem>Click Save Bookmark to save the previewed bookmark.</ListItem>
                     </OrderedList>

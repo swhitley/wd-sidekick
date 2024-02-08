@@ -53,11 +53,10 @@ class CursorController implements ContentProvider {
 
           if (copyUrl?.hasAttribute("data-clipboard-text")) {
             wdLink.url = copyUrl.getAttribute("data-clipboard-text") + "";
-            wdLink = wdLinkUpdate(wdLink);
+            let newWDLink = wdLinkUpdate(wdLink);
+            this.store.dispatch(setWDLink(newWDLink));  
           }
-        }
-        
-        this.store.dispatch(setWDLink(wdLink));        
+        }     
       }      
     }
     catch (e) {} 
