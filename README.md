@@ -3,6 +3,13 @@
 
 ![](blank.gif)
 
+## Commands
+### Install packages
+npm install
+
+### Live Dev for multiple browsers
+npm run start [browser]
+### npm run start chrome firefox safari
 
 ## Credits
 
