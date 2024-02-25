@@ -85,7 +85,7 @@ const SidePanelApp = () => {
     };
 
       topFolders?.forEach(function(folder) {
-          if (folder.title === "Other bookmarks") {
+          if (folder.title === "Other Bookmarks") {
             otherBookmarks = folder;
             if (otherBookmarks.children) {
               otherBookmarks.children.forEach(function(obFolder) {
@@ -133,6 +133,20 @@ const SidePanelApp = () => {
   const openInNewTab = (url: string) => {
     window.open(url, '_blank', 'noreferrer');    
   };
+
+  const saveCurrentTab = (id: string, linkList: chrome.bookmarks.BookmarkTreeNode[]) => {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, ([currentTab]) => {
+      if (currentTab) {
+        let link = {} as WDLink;
+        link.title = currentTab.title + "";
+        link.url = currentTab.url + "";
+        saveBookmark(link, id, linkList);
+      }
+    });
+  }
 
   const saveBookmark = (link: WDLink, id: string, linkList: chrome.bookmarks.BookmarkTreeNode[]) => {
     if (link.title.length > 0 && link.url.length > 0 && id.length > 0) {
@@ -182,6 +196,7 @@ const SidePanelApp = () => {
     );
   }
 
+ 
   return (
       <Container bg='gray.100' 
         minH={'100vh'}
@@ -198,12 +213,20 @@ const SidePanelApp = () => {
           Save Bookmark</Button>
         <Button
           bg={'ButtonFace'}
-          ml={'10px'}
+          ml={'8px'}
           size={'xs'}
           title='Refresh'       
           onClick={() => refresh()}
         ><RepeatIcon marginRight={'2px'} />
           Refresh</Button>
+        <Button
+          bg={'ButtonFace'}
+          ml={'8px'}
+          size={'xs'}
+          title='Add current tab'       
+          onClick={() => saveCurrentTab(folderId, linkList)}
+        ><SmallAddIcon marginRight={'2px'} />
+          Add Tab</Button>          
       </Container>
       <Container mt={4} textAlign={'center'} >
         <Flex>
