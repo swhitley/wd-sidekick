@@ -85,7 +85,7 @@ const SidePanelApp = () => {
     };
 
       topFolders?.forEach(function(folder) {
-          if (folder.title === "Other Bookmarks") {
+          if (folder.title.toLowerCase() === "other bookmarks") {
             otherBookmarks = folder;
             if (otherBookmarks.children) {
               otherBookmarks.children.forEach(function(obFolder) {
