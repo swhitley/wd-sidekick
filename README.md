@@ -6,6 +6,12 @@ Manage bookmarks for Workday. Includes start/stop proxy and login links. Appears
 
 ![image](https://github.com/swhitley/wd-sidekick/assets/413552/98cdd9d4-9080-484b-976d-8f0056745691)
 
+![image](https://github.com/swhitley/wd-sidekick/assets/413552/76acf55a-dd92-4d13-94e2-06960258097d)
+
+![image](https://github.com/swhitley/wd-sidekick/assets/413552/48ddf0e4-6d8a-4850-9e39-67274470e42e)
+
+
+
 
 
 ## Chrome Web Store 
