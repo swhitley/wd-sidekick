@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { DeleteIcon, QuestionIcon, AddIcon, RepeatIcon, SmallAddIcon } from '@chakra-ui/icons'
+import { AddIcon, DeleteIcon, QuestionIcon, RepeatIcon, SmallAddIcon } from '@chakra-ui/icons'
 import { 
   Box, Button, Container, Flex, Heading, Link, 
   List,
@@ -12,8 +12,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Text,
-  Tooltip
+  Text
 } from "@chakra-ui/react";
 import { Reorder } from "framer-motion";
 
@@ -64,6 +63,7 @@ const SidePanelApp = () => {
         }
       }
     });
+
   };
 
   useEffect(() => {
@@ -195,7 +195,6 @@ const SidePanelApp = () => {
       </Box>
     );
   }
-
  
   return (
       <Container bg='gray.100' 
@@ -203,22 +202,7 @@ const SidePanelApp = () => {
         overflowY={'hidden'}
         textAlign={'left'}
       >
-      <Container bg={'white'} mt={2} textAlign={'left'} rounded="md" p={2} mt={2}>
-        <Button
-          bg={'ButtonFace'}
-          size={'xs'}
-          title='Save Bookmark'          
-          onClick={() => saveBookmark(_wdLink, folderId, linkList)}
-        ><SmallAddIcon marginRight={'2px'} />
-          Save Bookmark</Button>
-        <Button
-          bg={'ButtonFace'}
-          ml={'8px'}
-          size={'xs'}
-          title='Refresh'       
-          onClick={() => refresh()}
-        ><RepeatIcon marginRight={'2px'} />
-          Refresh</Button>
+      <Container bg={'white'} mt={2} p={2} rounded="md" textAlign={'left'}>
         <Button
           bg={'ButtonFace'}
           ml={'8px'}
@@ -226,7 +210,15 @@ const SidePanelApp = () => {
           title='Add current tab'       
           onClick={() => saveCurrentTab(folderId, linkList)}
         ><SmallAddIcon marginRight={'2px'} />
-          Add Tab</Button>          
+          Add Tab</Button>     
+        <Button
+          bg={'ButtonFace'}
+          ml={'8px'}
+          size={'xs'}
+          title='Connect'       
+          onClick={() => refresh()}
+        ><RepeatIcon marginRight={'2px'} />
+          Connect</Button>     
       </Container>
       <Container mt={4} textAlign={'center'} >
         <Flex>
@@ -244,8 +236,8 @@ const SidePanelApp = () => {
               <PopoverHeader>Bookmark Preview</PopoverHeader>
               <PopoverBody><OrderedList><ListItem>Right-click or control-click a Workday object link.</ListItem>
                     <ListItem>Hover over any link in the pop up.</ListItem>
-                    <ListItem>Click Refresh (above) if the Bookmark Preview does not change.</ListItem>
-                    <ListItem>Click Save Bookmark to save the previewed bookmark.</ListItem>
+                    <ListItem>Click Connect (above) if the Bookmark Preview does not change.</ListItem>
+                    <ListItem>Click Add Bookmark (+) to save the previewed bookmark.</ListItem>
                     </OrderedList>
               </PopoverBody>
             </PopoverContent>
@@ -253,7 +245,9 @@ const SidePanelApp = () => {
             </Container>
           </Flex>
       </Container>
-      <Container bg="white" rounded="md" p={2} mt={2} key="{_wdLink.text}">
+      <Container bg="white" key="{_wdLink.text}" mt={2} p={2} rounded="md">
+        <Flex>
+        <Box w='95%'>
         <Text fontWeight={'bold'}>           
             { _wdLink.tenant.length > 0 ?
               (<span>[
@@ -282,9 +276,9 @@ const SidePanelApp = () => {
             : ""}
             {_wdLink.proxy && _wdLink.proxy.length > 0 ? 
               (<Link
+                ml={4}
                 role="link"
                 title='Start Proxy'
-                ml={4}
                 onClick={() => openInNewTab( _wdLink.proxy)}
               >
                 Start Proxy
@@ -292,42 +286,55 @@ const SidePanelApp = () => {
             : ""}
             { _wdLink.stopProxy && _wdLink.stopProxy.length > 0 ? 
               (<Link
+                ml={4}
                 role="link"
                 title='Stop Proxy'
-                ml={4}
                 onClick={() => openInNewTab( _wdLink.stopProxy)}
               >
                 Stop Proxy
               </Link>)
             : ""}
-          </p>
-          </Container>
+            </p>
+            </Box>
+            { _wdLink.stopProxy && _wdLink.stopProxy.length > 0 ? 
+              (<Box textAlign={'right'}>
+                <Button
+                  size={'xs'}
+                  title='Add Bookmark'
+                  onClick={() => saveBookmark(_wdLink, folderId, linkList)}
+                >
+                  <AddIcon boxSize={3} />
+                </Button>
+            </Box>)
+            : ""}
+          </Flex>          
+        </Container>
         <Container mt={6} textAlign={'center'} ><Heading size={'md'}>WD Sidekick Bookmarks</Heading></Container>
           <List 
-            size="xl" 
-            variant="custom" 
-            spacing={5} 
             as={Reorder.Group} 
-            axis="y"
+            axis="y" 
+            size="xl" 
+            spacing={5} 
             values={linkList}
+            variant="custom"
             onReorder={OnReorder}>
             {linkList.map(item => {
               const newWDLink = { title: item.title, url: item.url, tenant: '', proxy: '', stopProxy: '', login: '' } as WDLink;
               const wdLink = wdLinkUpdate( newWDLink );
               return (
                 <ListItem  
+                  as={Reorder.Item} 
                   bg="white" 
+                  cursor="move" 
+                  initial="notDragging" 
                   key={item.index} 
-                  mt={2} 
-                  p={2} 
-                  rounded="md" 
-                  value={item}
-                  as={Reorder.Item}
-                  variants={variants}
-                  initial="notDragging"
-                  whileDrag="dragging"
+                  mt={2}
+                  p={2}
                   position="relative"
-                  cursor="move"
+                  rounded="md"
+                  value={item}
+                  variants={variants}
+                  whileDrag="dragging"
                   >
                   <Flex>
                     <Box w='95%'>
@@ -356,9 +363,9 @@ const SidePanelApp = () => {
                         </Link>
                         { wdLink.proxy.length > 0 ? 
                         (<Link
+                            ml={4}
                             role="link"
                             title='Start Proxy'
-                            ml={4}
                             onClick={() => openInNewTab(wdLink.proxy)}                    
                           >
                             Start Proxy
@@ -366,9 +373,9 @@ const SidePanelApp = () => {
                           : "" }
                         { wdLink.stopProxy.length > 0 ? 
                           (<Link
+                            ml={4}
                             role="link"
                             title='Stop Proxy'
-                            ml={4}
                             onClick={() => openInNewTab( wdLink.stopProxy)}
                           >
                             Stop Proxy

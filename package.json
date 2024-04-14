@@ -1,6 +1,6 @@
 {
   "name": "wd-sidekick",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Workday helper functions.",
   "main": "index.js",
   "scripts": {

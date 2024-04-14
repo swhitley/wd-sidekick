@@ -5,6 +5,7 @@ import PortNames from '../types/PortNames';
 import CursorController from './controllers/CursorController';
 
 const initialize = async () => {
+
   const store = createStoreProxy(PortNames.ContentPort);
 
   const controllers = [

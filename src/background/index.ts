@@ -16,10 +16,9 @@ chrome.tabs.onUpdated
       try {
         if (!(tab.id && changeInfo.status === 'complete')) return;
 
-        if (window.location.href.indexOf('workday') < 0) return;
-
         if (await storage.getItem('panelOpen')) {
           injectContentScript(tabId);
+
         }
       }
       catch (e) {}
