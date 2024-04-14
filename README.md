@@ -4,7 +4,8 @@ Workday helper functions.
 
 Manage bookmarks for Workday. Includes start/stop proxy and login links. Appears as a Chrome side panel for easy access.  Pin the extension to Chrome and click the icon to activate.
 
-![image](https://github.com/swhitley/wd-sidekick/assets/413552/6bae4e2c-b4fa-4c49-8e97-4a70f118344a)
+![image](https://github.com/swhitley/wd-sidekick/assets/413552/98cdd9d4-9080-484b-976d-8f0056745691)
+
 
 
 ## Chrome Web Store 
