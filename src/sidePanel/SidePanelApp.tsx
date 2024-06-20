@@ -43,6 +43,8 @@ const SidePanelApp = () => {
   const [linkList, setList] = React.useState(initLink);
   const [folderId, setFolderId] = React.useState('');
   const _wdLink = useAppSelector(state => state.content.wdLink);
+  const _community_link = 'https://resourcecenter.workday.com';
+  const _developer_link = 'https://developer.workday.com';
   
   const connect = async () => {
     const sidePanelPort = chrome.runtime.connect({ name: PortNames.SidePanelPort });
@@ -220,12 +222,31 @@ const SidePanelApp = () => {
         ><RepeatIcon marginRight={'2px'} />
           Connect</Button>     
       </Container>
+      <Container bg={'white'} mt={2} p={2} rounded="md" textAlign={'left'}>
+      <Link
+              marginRight={'5px'}
+              role="link"
+              title='Workday Community'
+              onClick={() => openInNewTab(_community_link)}
+            >
+              Community
+      </Link>
+      |
+      <Link
+              marginLeft={'5px'}
+              role="link"
+              title='Workday Developer'
+              onClick={() => openInNewTab(_developer_link)}
+            >
+              Developer
+      </Link>
+      </Container>
       <Container mt={4} textAlign={'center'} >
         <Flex>
           <Container w={'75%'}>
-            <Heading size={'md'} textAlign={'right'}>Bookmark Preview</Heading>
+            <Heading size={'sm'} textAlign={'right'}>Bookmark Preview</Heading>
           </Container>
-          <Container fontSize={'md'} textAlign={'left'} w={'25%'}>
+          <Container fontSize={'md'} marginTop={'-1'} textAlign={'left'} w={'25%'}>
             <Popover trigger='hover'>
             <PopoverTrigger>
               <QuestionIcon fontSize={'md'} />
@@ -309,7 +330,7 @@ const SidePanelApp = () => {
             : ""}
           </Flex>          
         </Container>
-        <Container mt={6} textAlign={'center'} ><Heading size={'md'}>WD Sidekick Bookmarks</Heading></Container>
+        <Container mt={6} textAlign={'center'} ><Heading size={'sm'}>Bookmarks</Heading></Container>
           <List 
             as={Reorder.Group} 
             axis="y" 
