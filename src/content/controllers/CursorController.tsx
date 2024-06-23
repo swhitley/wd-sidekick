@@ -14,10 +14,41 @@ class CursorController implements ContentProvider {
     this.store.ready().then(() => {
       document.addEventListener('mousemove', this.handleTopNav);
       document.addEventListener('mousemove', this.handleMouseMove);
+      document.addEventListener('click', this.handleClickPaste);
     });
 
     return this;
-  }
+  }  
+
+  handleClickPaste = (e: MouseEvent) => {
+    try {
+      if (window.location.href.indexOf("workday") < 0) {
+        return;
+      }
+  
+      if (!e.target) return;      
+
+      const elem = e.target as HTMLElement;
+      const input = elem.closest("input");
+      
+      if (!input) return; 
+
+      if (input.value !== '*' && !input.getAttribute("data-click-paste")) return; 
+
+      input.setAttribute("data-click-paste", "true");
+      
+      navigator.clipboard.readText().then(clipText => {
+        let items = clipText.split('\n');
+        const next = items.shift();
+        navigator.clipboard.writeText(items.join('\n'));
+        if (next) {
+          input.value = next.toString();  
+        }          
+      }); 
+    } catch (e) {}             
+
+    return this;
+  };
 
   handleTopNav = () => {    
     //
@@ -126,7 +157,7 @@ class CursorController implements ContentProvider {
               this.store.dispatch(setWDLink(newWDLink));
               if (!popup.querySelector('.startProxy')) {
                 let startProxyDiv = document.createElement("div");
-                startProxyDiv.setAttribute("class", "WFUN WOTN WKTN");
+                startProxyDiv.setAttribute("class", "WE2M WN1M WJ1M");
                 let startProxy = document.createElement("a");
                 startProxy.setAttribute("href", wdLink.proxy);
                 startProxy.setAttribute("class", "startProxy");

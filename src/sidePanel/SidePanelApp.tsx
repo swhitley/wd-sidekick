@@ -209,10 +209,10 @@ const SidePanelApp = () => {
           bg={'ButtonFace'}
           ml={'8px'}
           size={'xs'}
-          title='Add current tab'       
+          title='Bookmark Current Tab'       
           onClick={() => saveCurrentTab(folderId, linkList)}
         ><SmallAddIcon marginRight={'2px'} />
-          Add Tab</Button>     
+          Bookmark</Button>     
         <Button
           bg={'ButtonFace'}
           ml={'8px'}
@@ -220,7 +220,7 @@ const SidePanelApp = () => {
           title='Connect'       
           onClick={() => refresh()}
         ><RepeatIcon marginRight={'2px'} />
-          Connect</Button>     
+          Connect</Button>
       </Container>
       <Container bg={'white'} mt={2} p={2} rounded="md" textAlign={'left'}>
       <Link

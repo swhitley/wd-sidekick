@@ -6,7 +6,9 @@ module.exports = [
   'sidePanel',
   'scripting',
   'tabs',
-  'bookmarks'
+  'bookmarks',
+  'clipboardRead',
+  'clipboardWrite'
 
   // 'clipboardRead',
   // 'cookies',

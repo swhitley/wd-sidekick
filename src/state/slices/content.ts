@@ -22,7 +22,7 @@ const slice = createSlice({
         },
         setWDLink: (state, action) => {
             state.wdLink = action.payload;
-        }        
+        }
     }
 });
 
