@@ -4,7 +4,7 @@ import { setWDLink } from "src/state/slices/content";
 import { State } from 'src/state/State';
 import { createStoreProxy } from 'src/state/store';
 import PortNames from "src/types/PortNames";
-import { wdLinkUpdate } from 'src/util/wdLinkUtil';
+import { wdLinkUpdate, wdProd } from 'src/util/wdLinkUtil';
 import ContentProvider from '../contracts/ContentProvider';
 
 class CursorController implements ContentProvider {
@@ -53,11 +53,16 @@ class CursorController implements ContentProvider {
   handleTopNav = () => {    
     //
     try {
+      
       if (window.location.href.indexOf("workday") < 0) {
         return;
       }
 
       let url = window.location.href;
+      if (wdProd(url)) {
+        return;
+      }
+
       if (url) {
         if (url.indexOf("/d/") > 0 ) {
           url = url.substring(0, url.indexOf("/d/") + 3);
@@ -120,7 +125,9 @@ class CursorController implements ContentProvider {
     try {
       var elem = document.elementFromPoint(e.clientX, e.clientY);
 
-      if (window.location.href.indexOf("workday") < 0) {
+      const url = window.location.href;
+
+      if (url.indexOf("workday") < 0) {
         return;
       }
 
@@ -155,7 +162,7 @@ class CursorController implements ContentProvider {
             let newWDLink = wdLinkUpdate(wdLink);
             if (newWDLink.proxy.length > 0) {
               this.store.dispatch(setWDLink(newWDLink));
-              if (!popup.querySelector('.startProxy')) {
+              if (!wdProd(url) && !popup.querySelector('.startProxy')) {
                 let startProxyDiv = document.createElement("div");
                 startProxyDiv.setAttribute("class", "WE2M WN1M WJ1M");
                 let startProxy = document.createElement("a");
