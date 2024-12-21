@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { AddIcon, DeleteIcon, QuestionIcon, RepeatIcon, SmallAddIcon } from '@chakra-ui/icons'
+import { AddIcon, DeleteIcon, QuestionIcon, RepeatIcon, SmallAddIcon, StarIcon } from '@chakra-ui/icons'
 import { 
   Box, Button, Container, Flex, Heading, Link, 
   List,
@@ -234,12 +234,33 @@ const SidePanelApp = () => {
       |
       <Link
               marginLeft={'5px'}
+              marginRight={'5px'}
               role="link"
               title='Workday Developer'
               onClick={() => openInNewTab(_developer_link)}
             >
-              Developer
+              Developer 
       </Link>
+      |
+            <Popover trigger='hover'>
+            <PopoverTrigger>
+              <Link marginLeft={'5px'}>Star Paste</Link>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              <PopoverHeader fontWeight={'bold'}>Star Paste</PopoverHeader>
+              <PopoverBody>
+              <Text mb={2}>Use star paste to fill in fields from a list of values in your clipboard.</Text>                
+                <OrderedList><ListItem>On a Workday page, enter an asterisk (*) in any field and click on that field.</ListItem>
+                    <ListItem>Every subsequent click in any input field will pull in the next value in the list from your clipboard.</ListItem>
+                    <ListItem>Repeat Step 1 to turn off Star Paste.</ListItem>
+                  </OrderedList>
+                  <Text mt={2}>Click Connect (above) if Star Paste is not active.</Text>
+                  <Text mt={2}>Star Paste is great for updating security lists and adding values to report filters.</Text>
+              </PopoverBody>
+            </PopoverContent>
+            </Popover>
       </Container>
       <Container mt={4} textAlign={'center'} >
         <Flex>

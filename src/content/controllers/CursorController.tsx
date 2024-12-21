@@ -7,6 +7,10 @@ import PortNames from "src/types/PortNames";
 import { wdLinkUpdate, wdProd } from 'src/util/wdLinkUtil';
 import ContentProvider from '../contracts/ContentProvider';
 
+declare global {
+  var starPaste: boolean;
+}
+
 class CursorController implements ContentProvider {
   app: HTMLElement | null = null;
   store: Store<State> = createStoreProxy(PortNames.ContentPort);
@@ -17,10 +21,13 @@ class CursorController implements ContentProvider {
       document.addEventListener('click', this.handleClickPaste);
     });
 
+    globalThis.starPaste = false;
+
     return this;
   }  
 
   handleClickPaste = (e: MouseEvent) => {
+    
     try {
       if (window.location.href.indexOf("workday") < 0) {
         return;
@@ -33,16 +40,18 @@ class CursorController implements ContentProvider {
       
       if (!input) return; 
 
-      if (input.value !== '*' && !input.getAttribute("data-click-paste")) return; 
+      if (input.value !== '*' && !globalThis.starPaste === true) return; 
 
-      input.setAttribute("data-click-paste", "true");
-      
+      if (input.value === '*') {
+        globalThis.starPaste = !globalThis.starPaste;
+      }
+
       navigator.clipboard.readText().then(clipText => {
         let items = clipText.split('\n');
         const next = items.shift();
         navigator.clipboard.writeText(items.join('\n'));
         if (next) {
-          input.value = next.toString();  
+          input.value = next.toString();
         }          
       }); 
     } catch (e) {}             
