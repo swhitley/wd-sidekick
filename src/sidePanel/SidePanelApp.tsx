@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { AddIcon, DeleteIcon, QuestionIcon, RepeatIcon, SmallAddIcon, StarIcon } from '@chakra-ui/icons'
+import { AddIcon, DeleteIcon, QuestionIcon, RepeatIcon, SmallAddIcon } from '@chakra-ui/icons'
 import { 
-  Box, Button, Container, Flex, Heading, Link, 
+  Box, Button, Container, Flex, Heading, Link,
   List,
   ListItem,
   OrderedList,
@@ -54,7 +54,7 @@ const SidePanelApp = () => {
     sidePanelPort.onMessage.addListener(message => {
       if (message.type === 'handle-init') {
         setIsConnected(true);
-        setWDLink({ title: '', url: '', tenant: '', proxy: '', stopProxy: '', login: '' });
+        setWDLink({ title: '', url: '', tenant: '', proxy: '', stopProxy: '', activateSecurity: '', login: '' });
         loadBookmarks();
       }
 
@@ -309,6 +309,7 @@ const SidePanelApp = () => {
           <p>
             {_wdLink.title && _wdLink.title.length > 0 ?   
               (<Link
+                marginRight={'5px'}
                 role="link"
                 title='See in New Tab'
                 onClick={() => openInNewTab(_wdLink.url)}
@@ -317,25 +318,38 @@ const SidePanelApp = () => {
               </Link>)
             : ""}
             {_wdLink.proxy && _wdLink.proxy.length > 0 ? 
-              (<Link
-                ml={4}
+              (<span> | <Link
+                marginLeft={'5px'}
+                marginRight={'5px'}
                 role="link"
                 title='Start Proxy'
                 onClick={() => openInNewTab( _wdLink.proxy)}
               >
-                Start Proxy
-              </Link>)
+                Start
+              </Link></span>)
             : ""}
             { _wdLink.stopProxy && _wdLink.stopProxy.length > 0 ? 
-              (<Link
-                ml={4}
+              (<span> | <Link
+                marginLeft={'5px'}
+                marginRight={'5px'}
                 role="link"
                 title='Stop Proxy'
                 onClick={() => openInNewTab( _wdLink.stopProxy)}
               >
-                Stop Proxy
-              </Link>)
+                Stop
+              </Link></span>)
             : ""}
+            { _wdLink.activateSecurity && _wdLink.activateSecurity.length > 0 ? 
+              (<span> | <Link
+                marginLeft={'5px'}
+                marginRight={'5px'}
+                role="link"
+                title='Activate Pending Security Policy Changes'
+                onClick={() => openInNewTab( _wdLink.activateSecurity)}
+              >
+                Security
+              </Link></span>)
+            : ""}            
             </p>
             </Box>
             { _wdLink.stopProxy && _wdLink.stopProxy.length > 0 ? 
@@ -361,7 +375,7 @@ const SidePanelApp = () => {
             variant="custom"
             onReorder={OnReorder}>
             {linkList.map(item => {
-              const newWDLink = { title: item.title, url: item.url, tenant: '', proxy: '', stopProxy: '', login: '' } as WDLink;
+              const newWDLink = { title: item.title, url: item.url, tenant: '', proxy: '', stopProxy: '', activateSecurity: '',  login: '' } as WDLink;
               const wdLink = wdLinkUpdate( newWDLink );
               return (
                 <ListItem  
@@ -397,32 +411,46 @@ const SidePanelApp = () => {
                         {item.title}
                       </Text>
                       <p>
-                        <Link                   
+                        <Link  
+                          marginRight={'5px'}                 
                           role="link"
                           title='See in New Tab'
                           onClick={() => openInNewTab(item.url + '')}>
                             Link
                         </Link>
                         { wdLink.proxy.length > 0 ? 
-                        (<Link
-                            ml={4}
+                        (<span> | <Link
+                            marginLeft={'5px'}
+                            marginRight={'5px'}
                             role="link"
                             title='Start Proxy'
                             onClick={() => openInNewTab(wdLink.proxy)}                    
                           >
-                            Start Proxy
-                          </Link>)
+                            Start
+                          </Link></span>)
                           : "" }
                         { wdLink.stopProxy.length > 0 ? 
-                          (<Link
-                            ml={4}
+                          (<span> | <Link
+                            marginLeft={'5px'}
+                            marginRight={'5px'}
                             role="link"
                             title='Stop Proxy'
                             onClick={() => openInNewTab( wdLink.stopProxy)}
                           >
-                            Stop Proxy
-                          </Link>)
+                            Stop
+                          </Link></span>)
                         : ""}
+                        { wdLink.activateSecurity.length > 0 ? 
+                          (<span> | <Link
+                            marginLeft={'5px'}
+                            marginRight={'5px'}
+                            role="link"
+                            title='Activate Pending Security Policy Changes'
+                            onClick={() => openInNewTab( wdLink.activateSecurity)}
+                          >
+                            Security
+                          </Link></span>)
+                        : ""}                        
                         </p>
                       </Box>
                     <Box textAlign={'right'}>

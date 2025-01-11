@@ -7,9 +7,7 @@ import PortNames from "src/types/PortNames";
 import { wdLinkUpdate, wdProd } from 'src/util/wdLinkUtil';
 import ContentProvider from '../contracts/ContentProvider';
 
-declare global {
-  var starPaste: boolean;
-}
+var _starPaste: boolean = false;
 
 class CursorController implements ContentProvider {
   app: HTMLElement | null = null;
@@ -20,8 +18,6 @@ class CursorController implements ContentProvider {
       document.addEventListener('mousemove', this.handleMouseMove);
       document.addEventListener('click', this.handleClickPaste);
     });
-
-    globalThis.starPaste = false;
 
     return this;
   }  
@@ -40,20 +36,20 @@ class CursorController implements ContentProvider {
       
       if (!input) return; 
 
-      if (input.value !== '*' && !globalThis.starPaste === true) return; 
-
       if (input.value === '*') {
-        globalThis.starPaste = !globalThis.starPaste;
+        _starPaste = !_starPaste;
       }
 
-      navigator.clipboard.readText().then(clipText => {
-        let items = clipText.split('\n');
-        const next = items.shift();
-        navigator.clipboard.writeText(items.join('\n'));
-        if (next) {
-          input.value = next.toString();
-        }          
-      }); 
+      if (_starPaste) {
+        navigator.clipboard.readText().then(clipText => {
+          let items = clipText.split('\n');
+          const next = items.shift();
+          navigator.clipboard.writeText(items.join('\n'));
+          if (next) {
+            input.value = next.toString();
+          }          
+        }); 
+      }
     } catch (e) {}             
 
     return this;
@@ -78,12 +74,13 @@ class CursorController implements ContentProvider {
         }
       }
 
-      let wdLink = { title: '', url: url, tenant: '', proxy: '', stopProxy: '', login: '' };
+      let wdLink = { title: '', url: url, tenant: '', proxy: '', stopProxy: '', activateSecurity: '', login: '' };
       wdLinkUpdate(wdLink);
 
+      // Top Nav
       // Stop Proxy
-      if (document.querySelector(".wdappchrome-aak:nth-child(2)") && !document.querySelector("#stopProxy")) {
-        let onBehalfOf = document.querySelector(".wdappchrome-aak:nth-child(2)");
+      if (document.querySelector("[data-automation-id='banner']:nth-child(2)") && !document.querySelector("#stopProxy")) {
+        let onBehalfOf = document.querySelector("[data-automation-id='banner']:nth-child(2)");
         if (onBehalfOf) {
           let divOuter = document.createElement("div");
           divOuter.setAttribute("style", "width:100%;");
@@ -103,15 +100,16 @@ class CursorController implements ContentProvider {
         }
       }
 
-      if (!document.querySelector("#startProxy") && document.querySelector(".wdappchrome-aak")) {
-        let aak = document.querySelector(".wdappchrome-aak");
-        if (aak) {
+      // Top Nav
+      if (!document.querySelector("#startProxy") && document.querySelector("[data-automation-id='banner']")) {
+        let banner = document.querySelector("[data-automation-id='banner']:nth-child(1)");
+        if (banner) {
           let divOuter = document.createElement("div");
           divOuter.setAttribute("style", "width:100%;");
-          aak.appendChild(divOuter);
+          banner.appendChild(divOuter);
           let divInner = document.createElement("div");
           divInner.setAttribute("style", "position:absolute;right:100px;top:5px;");
-          aak.appendChild(divInner);
+          banner.appendChild(divInner);
 
           // Start Proxy
           let startProxy = document.createElement("a");
@@ -141,7 +139,7 @@ class CursorController implements ContentProvider {
       }
 
       if (elem && elem.closest("[data-automation-widget=wd-popup]")) {
-        let wdLink = { title: '', url: '', tenant: '', proxy: '', stopProxy: '', login: '' };
+        let wdLink = { title: '', url: '', tenant: '', proxy: '', stopProxy: '', activateSecurity: '',  login: '' };
         var popup = elem.closest("[data-automation-widget=wd-popup]");
         if (popup) {
 
@@ -173,7 +171,7 @@ class CursorController implements ContentProvider {
               this.store.dispatch(setWDLink(newWDLink));
               if (!wdProd(url) && !popup.querySelector('.startProxy')) {
                 let startProxyDiv = document.createElement("div");
-                startProxyDiv.setAttribute("class", "WE2M WN1M WJ1M");
+                startProxyDiv.setAttribute("class", "gwt-Label WF2M WO1M WK1M");
                 let startProxy = document.createElement("a");
                 startProxy.setAttribute("href", wdLink.proxy);
                 startProxy.setAttribute("class", "startProxy");

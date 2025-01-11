@@ -4,6 +4,7 @@ type WDLink = {
   tenant: string;
   proxy: string;
   stopProxy: string;
+  activateSecurity: string;
   login: string;
 };
 
