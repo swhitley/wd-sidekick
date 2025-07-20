@@ -25,7 +25,7 @@ class CursorController implements ContentProvider {
   handleClickPaste = (e: MouseEvent) => {
     
     try {
-      if (window.location.href.indexOf("workday") < 0) {
+      if (window.location.href.toLowerCase().indexOf("workday") < 0) {
         return;
       }
   
@@ -59,7 +59,7 @@ class CursorController implements ContentProvider {
     //
     try {
       
-      if (window.location.href.indexOf("workday") < 0) {
+      if (window.location.href.toLowerCase().indexOf("workday") < 0) {
         return;
       }
 
@@ -134,7 +134,7 @@ class CursorController implements ContentProvider {
 
       const url = window.location.href;
 
-      if (url.indexOf("workday") < 0) {
+      if (url.toLowerCase().indexOf("workday") < 0) {
         return;
       }
 
@@ -171,7 +171,13 @@ class CursorController implements ContentProvider {
               this.store.dispatch(setWDLink(newWDLink));
               if (!wdProd(url) && !popup.querySelector('.startProxy')) {
                 let startProxyDiv = document.createElement("div");
-                startProxyDiv.setAttribute("class", "gwt-Label WF2M WO1M WK1M");
+                if (copyUrl.hasAttribute("class")) {
+                  startProxyDiv.setAttribute("class", copyUrl.getAttribute("class") + "");
+                }
+                else {
+                  startProxyDiv.setAttribute("class", "WA-M WJYM WFYM");
+                }
+
                 let startProxy = document.createElement("a");
                 startProxy.setAttribute("href", wdLink.proxy);
                 startProxy.setAttribute("class", "startProxy");

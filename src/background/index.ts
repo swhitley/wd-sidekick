@@ -12,13 +12,17 @@ chrome.sidePanel
   .catch((error: any) => console.error(error));
 
 chrome.tabs.onUpdated
-    .addListener(async (tabId, changeInfo, tab) => {
-      try {
-        if (!(tab.id && changeInfo.status === 'complete')) return;
-
-        if (await storage.getItem('panelOpen')) {
-          injectContentScript(tabId);
-
+   .addListener(async (tabId, changeInfo, tab) => {
+      try {        
+        if (tab.id && changeInfo.status === 'complete' && tab.url && tab.url.toLowerCase().includes('workday')) {
+          if (await storage.getItem('autoInjectEnabled')) {
+            injectContentScript(tabId);
+          }
+          else {
+            if (await storage.getItem('panelOpen')) {
+              injectContentScript(tabId);
+            }
+          }
         }
       }
       catch (e) {}

@@ -37,7 +37,7 @@ export const wdLinkUpdate = (wdLink: WDLink) => {
           wdLink.stopProxy = uri + '/d/task/2997$12115.htmld';
           wdLink.activateSecurity = uri + '/d/task/2997$1904.htmld';
           wdLink.login = uri + '/login.htmld?redirect=n';
-          if (uriArr.length > 3 && wdLink.url.indexOf("workday") > 0) {
+          if (uriArr.length > 3 && wdLink.url.toLowerCase().indexOf("workday") > 0) {
             wdLink.tenant = uriArr[3] + (prod ? ' - prod' : '');
           }
 
