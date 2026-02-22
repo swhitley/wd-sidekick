@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wd-blue: #0875e1;
+  --color-wd-gray: #f0f4f8;
+}
+
+@layer base {
+  html, body {
+    @apply m-0 p-0 w-full overflow-x-hidden bg-wd-gray font-['Poppins',_sans-serif];
+    max-width: 100vw; 
+    height: 100%;
+  }
+
+  /* Force all elements to respect the parent width */
+  * {
+    @apply box-border min-w-0;
+  }
+}
+
+@layer components {
+  /* Updated to remove hard borders and increase roundness/shadow */
+  .chakra-card {
+    @apply bg-white p-4 rounded-xl shadow-sm transition-all w-full mb-3 flex min-w-0;
+  }
+  
+  .btn-ghost {
+    @apply flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-[11px] font-medium transition-colors whitespace-nowrap text-slate-700;
+  }
+}

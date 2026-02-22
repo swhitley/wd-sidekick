@@ -1,38 +1,13 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "webworker"
-    ],
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "baseUrl": ".",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": false,
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "target": "es5",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Node",
     "paths": {
-      "src/*": ["src/*"],
-    }
+      "@/*": ["./src/*"]
+    },
+    "types": ["vite/client"]
   },
-  "include": [
-    "src",
-    "config"
-  ],
-  "ignore": [
-    "test",
-    "jest.config.js",
-  ]
+  "include": ["src/**/*"]
 }

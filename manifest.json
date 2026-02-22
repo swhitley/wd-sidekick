@@ -1,0 +1,71 @@
+{
+  "version": "1.5.0",
+  "manifest_version": 3,
+  "name": "WD Sidekick",
+  "description": "Workday helper functions.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjf3cv1GT3tG8CYYW2WbPcZT8OIEWuTCn7vxNVyoGvPrgr3ZoqI0FK5ikrXIQUVU/JeOwNAEMhYJ9ebHfI7no8TMevvenVpBO+yi9fBPI4bprCMUr3ieU/SbJZpUNgJLHea+dJMRkSdPCWzopDELQpfj94eMoJKHXQXr5bapHgzA9z/7U4BHK7HDgyxajy5USDaQ+rPpDGarEON0I2h5glrT/NMg4Ugzu2Qt5g9pJK13b8ASnqnBsSuHXQtlHPJg3qwqtXMJgkYCFw/LGtQxUb5m5JJsOhM4gJccBnEbtT/Q2mOYA/j8lnGSlyGUHeSynh1f7JYx4igJTAnnih1m/aQIDAQAB",
+  "minimum_chrome_version": "114",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "sidePanel",
+    "scripting",
+    "tabs",
+    "bookmarks",
+    "clipboardRead",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+      "*://*.workday.com/*",
+      "*://*.myworkday.com/*",
+      "*://*.workdaysuv.com/*",
+      "*://*.myworkdaygov.com/*",
+      "*://*.myworkdayjobs.com/*",
+      "*://*.myworkdaysite.com/*",
+      "*://*.myworkdaygadgets.com/*"
+  ],
+  "action": {
+    "default_title": "Click to open panel"
+  },
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "background": {
+    "service_worker": "src/background.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "js": ["src/content/CursorController.ts"],
+      "matches": [
+          "*://*.workday.com/*",
+          "*://*.myworkday.com/*",
+          "*://*.workdaysuv.com/*",
+          "*://*.myworkdaygov.com/*",
+          "*://*.myworkdayjobs.com/*",
+          "*://*.myworkdaysite.com/*",
+          "*://*.myworkdaygadgets.com/*"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "images/*"],
+       "matches": [
+          "*://*.workday.com/*",
+          "*://*.myworkday.com/*",
+          "*://*.workdaysuv.com/*",
+          "*://*.myworkdaygov.com/*",
+          "*://*.myworkdayjobs.com/*",
+          "*://*.myworkdaysite.com/*",
+          "*://*.myworkdaygadgets.com/*"
+      ]
+    }
+  ],   
+  "icons": {
+    "128": "images/favicon.png"
+  },
+ "content_security_policy": {
+    "extension_pages": "default-src 'self'; connect-src 'self' https://apis.google.com https://www.googleapis.com https://securetoken.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'unsafe-inline' 'self' data: https://upload.wikimedia.org;"
+  }
+}

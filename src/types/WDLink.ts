@@ -1,4 +1,5 @@
 type WDLink = {
+  id: string | number;  // bookmark node ID from Chrome
   title: string;
   url: string;
   tenant: string;
@@ -6,6 +7,7 @@ type WDLink = {
   stopProxy: string;
   activateSecurity: string;
   login: string;
+  folder?: string;      // "Global" maps to WD Sidekick root; any other string = subfolder
 };
 
 export default WDLink;
