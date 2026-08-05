@@ -1,25 +1,32 @@
-import { WDLink } from '@/types/WDLink';
+import type WDLink from '@/types/WDLink';
 
 /**
  * Check if a Workday URL is a production environment
  * https://doc.workday.com/admin-guide/en-us/authentication-and-security/authentication/authentication-references/ele1400114318375.html
  */
 export function wdProd(url: string): boolean {
- 
-  let prod = false;
   try {
-  const urlLower = url.toLowerCase();
-  if (urlLower.indexOf('myworkday.com') > 0 || urlLower.indexOf('myworkdaygov.com') > 0) {
-    const subs = urlLower.split('.');
-    if (subs[0].indexOf('impl') < 0 && subs[0].indexOf('dev') < 0) {
-      prod = true;
-    }
-  }
-  } catch (e) {
-    console.error("Production check failed", e);
-  }
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+    const pathname = urlObj.pathname.toLowerCase();
+    
+    // Common identifiers in Workday non-production hostnames
+    const nonProdHosts = ['impl', 'dev', 'sandbox', 'sbx', 'preview'];
+    
+    // Identifiers sometimes appended to the tenant name in the URL path (e.g., /companyname_pt1/)
+    const nonProdPaths = ['_pt1', '_preview', '_dpt1'];
+    
+    const isNonProdHost = nonProdHosts.some(keyword => hostname.includes(keyword));
+    const isNonProdPath = nonProdPaths.some(keyword => pathname.includes(keyword));
 
-  return prod;
+    return !(isNonProdHost || isNonProdPath);
+    
+  } catch (e) {
+    console.error("WD Sidekick production check failed:", e);
+    // Fail-safe: default to false (non-prod) if parsing fails so you don't 
+    // accidentally trigger prod-only behavior on a malformed URL.
+    return false; 
+  }
 }
 
 /**

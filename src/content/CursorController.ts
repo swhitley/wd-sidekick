@@ -13,11 +13,11 @@ export class CursorController {
   private currentIndex: number = 0;
 
   init() {
-    chrome.storage.sync.get(['alwaysOn'], (syncRes) => {
-      chrome.storage.local.get(['isPanelOpen'], (localRes) => {
+    chrome.storage.sync.get({ alwaysOn: false }, (syncRes) => {
+      chrome.storage.local.get({ isPanelOpen: false }, (localRes) => {
         
-        this.alwaysOn = syncRes.alwaysOn === true || syncRes.alwaysOn === 'true';
-        this.isPanelOpen = localRes.isPanelOpen === true || localRes.isPanelOpen === 'true';
+        this.alwaysOn = syncRes.alwaysOn === true;
+        this.isPanelOpen = localRes.isPanelOpen === true;
 
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', () => this.updateListeners());
@@ -30,13 +30,13 @@ export class CursorController {
     chrome.storage.onChanged.addListener((changes, area) => {
       // If the USER changes a setting (on any device, synced remotely)
       if (area === 'sync' && changes.alwaysOn) {
-        this.alwaysOn = changes.alwaysOn.newValue === true || changes.alwaysOn.newValue === 'true';
+        this.alwaysOn = changes.alwaysOn.newValue === true;
         this.updateListeners();
       }
 
       // If the PANEL opens/closes (on THIS local device only)
       if (area === 'local' && changes.isPanelOpen) {
-        this.isPanelOpen = changes.isPanelOpen.newValue === true || changes.isPanelOpen.newValue === 'true';
+        this.isPanelOpen = changes.isPanelOpen.newValue === true;
         this.updateListeners();
       }
     });
@@ -122,6 +122,59 @@ export class CursorController {
     }
   };
 
+  private addStopProxy(stopProxyUrl: string) {
+    // Prevent duplicate injections
+    if (document.getElementById('stopProxy')) return;
+
+    let targetBanner: HTMLElement | null = null;
+
+    // 1. Try finding the NEW Canvas Kit banner layout
+    const banners = document.querySelectorAll('[data-automation-id="banner"]');
+    for (const banner of Array.from(banners)) {
+        if (banner.textContent && banner.textContent.includes('On behalf of:')) {
+            targetBanner = banner as HTMLElement;
+            break;
+        }
+    }
+
+    // 2. Fall back to the EXISTING (older) Workday layout
+    if (!targetBanner) {
+        // REPLACE '.wd-EnvironmentBanner' with whatever selector wd-sidekick currently uses if different
+        const oldBannerElements = document.querySelectorAll('.wd-EnvironmentBanner'); 
+        for (const banner of Array.from(oldBannerElements)) {
+            if (banner.textContent && banner.textContent.includes('On behalf of:')) {
+                targetBanner = banner as HTMLElement;
+                break;
+            }
+        }
+    }
+
+    // 3. Inject the link into the banner with the exact original DOM structure
+    if (targetBanner) {
+        // The new Canvas Kit banners use flexbox. Adding relative positioning 
+        // ensures the 'position: absolute' link container stays inside the banner.
+        if (window.getComputedStyle(targetBanner).position === 'static') {
+            targetBanner.style.position = 'relative';
+        }
+
+        let divOuter = document.createElement("div");
+        divOuter.setAttribute("style", "width:100%;");
+        targetBanner.appendChild(divOuter);
+        
+        let divInner = document.createElement("div");
+        divInner.setAttribute("style", "position:absolute;right:100px;top:5px;");
+        targetBanner.appendChild(divInner);
+        
+        let stopProxy = document.createElement("a");
+        stopProxy.setAttribute("href", stopProxyUrl);
+        stopProxy.setAttribute("id", "stopProxy");
+        stopProxy.setAttribute("style", "margin-left:26px;color:white;");
+        stopProxy.setAttribute("title", "Stop Proxy");
+        stopProxy.innerHTML = "Stop Proxy";
+        divInner.appendChild(stopProxy);
+    }
+  }
+
   handleTopNav = () => {
     try {
       let url = window.location.href;
@@ -137,9 +190,11 @@ export class CursorController {
       let wdLink: WDLink = { id: 0, title: '', url: url, tenant: '', proxy: '', stopProxy: '', activateSecurity: '', login: '' };
       const updatedLink = wdLinkUpdate(wdLink);
 
-      if (document.querySelector("[name='username']")){
-        let elem = document.querySelector("[name='username']");
-        const input = elem.tagName === 'INPUT' ? (elem as HTMLInputElement) : elem.closest("input") as HTMLInputElement;  
+      if (document.querySelector("[data-automation-id='userName']")){
+        let elem = document.querySelector("[data-automation-id='userName']");
+        if (!elem) return;
+        const input = elem.tagName === 'INPUT' ? (elem as HTMLInputElement) : elem.querySelector("input") as HTMLInputElement;  
+        if (!input) return;
         if (input.value.length === 0) {   
           const uriArr = url.split('/'); 
           if (uriArr.length > 5) {
@@ -148,26 +203,8 @@ export class CursorController {
         }
       }
 
-      if (document.querySelector("[data-automation-id='banner']:nth-child(2)") && !document.querySelector("#stopProxy")) {
-        let onBehalfOf = document.querySelector("[data-automation-id='banner']:nth-child(2)");
-        if (onBehalfOf) {
-          let divOuter = document.createElement("div");
-          divOuter.setAttribute("style", "width:100%;");
-          onBehalfOf.appendChild(divOuter);
-          
-          let divInner = document.createElement("div");
-          divInner.setAttribute("style", "position:absolute;right:100px;top:5px;");
-          onBehalfOf.appendChild(divInner);
-          
-          let stopProxy = document.createElement("a");
-          stopProxy.setAttribute("href", updatedLink.stopProxy);
-          stopProxy.setAttribute("id", "stopProxy");
-          stopProxy.setAttribute("style", "margin-left:26px;color:white;");
-          stopProxy.setAttribute("title", "Stop Proxy");
-          stopProxy.innerHTML = "Stop Proxy";
-          divInner.appendChild(stopProxy);
-        }
-      }
+      // Execute the resilient Stop Proxy injection
+      this.addStopProxy(updatedLink.stopProxy);
 
       if (!document.querySelector("#startProxy") && document.querySelector("[data-automation-id='banner']")) {
         let banner = document.querySelector("[data-automation-id='banner']:nth-child(1)");

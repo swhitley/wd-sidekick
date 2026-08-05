@@ -39,7 +39,7 @@
   onMount(() => {
     // 1. Load "Always On" state, folders, and the last selected folder
     chrome.storage.sync.get(['alwaysOn', 'folders', 'lastSelectedFolder'], (data) => {
-      isInjectionEnabled = data.alwaysOn || false;
+      isInjectionEnabled = data.alwaysOn === true;
       
       if (data.folders && data.folders.length > 0) {
         folders = data.folders;

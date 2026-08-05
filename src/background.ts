@@ -1,5 +1,5 @@
 // src/background.ts
-import { WDLink } from '@/types/WDLink';
+import type WDLink from '@/types/WDLink';
 import { wdLinkUpdate } from '@/util/wdLinkUtil';
 
 // Tell Chrome to open the Side Panel when the extension icon is clicked
@@ -10,9 +10,7 @@ chrome.sidePanel
 const ROOT_FOLDER_NAME = 'WD Sidekick';
 let sidePanelPort: chrome.runtime.Port | null = null;
 
-chrome.runtime.onStartup.addListener(() => {
-    chrome.storage.local.set({ isPanelOpen: false });
-});
+chrome.storage.local.set({ isPanelOpen: false });
 
 // --- BOOKMARK HELPER FUNCTIONS ---
 

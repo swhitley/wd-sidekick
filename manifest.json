@@ -1,5 +1,5 @@
 {
-  "version": "1.5.0",
+  "version": "1.5.2",
   "manifest_version": 3,
   "name": "WD Sidekick",
   "description": "Workday helper functions.",
@@ -16,13 +16,12 @@
     "clipboardWrite"
   ],
   "host_permissions": [
+      "*://workday.com/*",
       "*://*.workday.com/*",
+      "*://myworkday.com/*",
       "*://*.myworkday.com/*",
-      "*://*.workdaysuv.com/*",
       "*://*.myworkdaygov.com/*",
-      "*://*.myworkdayjobs.com/*",
-      "*://*.myworkdaysite.com/*",
-      "*://*.myworkdaygadgets.com/*"
+      "*://myworkdaygov.com/*"
   ],
   "action": {
     "default_title": "Click to open panel"
@@ -38,13 +37,12 @@
     {
       "js": ["src/content/CursorController.ts"],
       "matches": [
-          "*://*.workday.com/*",
-          "*://*.myworkday.com/*",
-          "*://*.workdaysuv.com/*",
-          "*://*.myworkdaygov.com/*",
-          "*://*.myworkdayjobs.com/*",
-          "*://*.myworkdaysite.com/*",
-          "*://*.myworkdaygadgets.com/*"
+        "*://workday.com/*",
+        "*://*.workday.com/*",
+        "*://myworkday.com/*",
+        "*://*.myworkday.com/*",
+        "*://*.myworkdaygov.com/*",
+        "*://myworkdaygov.com/*"
       ]
     }
   ],
@@ -52,13 +50,12 @@
     {
       "resources": ["assets/*", "images/*"],
        "matches": [
-          "*://*.workday.com/*",
-          "*://*.myworkday.com/*",
-          "*://*.workdaysuv.com/*",
-          "*://*.myworkdaygov.com/*",
-          "*://*.myworkdayjobs.com/*",
-          "*://*.myworkdaysite.com/*",
-          "*://*.myworkdaygadgets.com/*"
+        "*://workday.com/*",
+        "*://*.workday.com/*",
+        "*://myworkday.com/*",
+        "*://*.myworkday.com/*",
+        "*://*.myworkdaygov.com/*",
+        "*://myworkdaygov.com/*"
       ]
     }
   ],   
