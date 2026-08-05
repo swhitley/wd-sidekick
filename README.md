@@ -6,12 +6,11 @@ Manage bookmarks for Workday. Includes start/stop proxy and login links. Appears
 
 Right-click or control-click a Workday object link. A Start Proxy link will be dynamically added to the popup and the bookmark will appear in the Bookmark Preview.  Either click the Start Proxy link to start a new proxy or click Add Bookmark (+) to save the previewed bookmark.
 
-<kbd> ![image](https://github.com/swhitley/wd-sidekick/assets/413552/98cdd9d4-9080-484b-976d-8f0056745691)
+<img width="640" height="400" alt="screenshot1" src="https://github.com/user-attachments/assets/0e6eb6e8-18ff-4a76-903a-e1130adce8b4" />
+
 
 <kbd> ![image](https://github.com/swhitley/wd-sidekick/assets/413552/d546e429-e637-439e-810a-96c11199cdce)
 
-
-<kbd> ![image](https://github.com/swhitley/wd-sidekick/assets/413552/48ddf0e4-6d8a-4850-9e39-67274470e42e)
 
 
 
@@ -30,8 +29,8 @@ https://chromewebstore.google.com/detail/wd-sidekick/gcbmmknadmjkdfjiflnmgohedia
 # Install packages
 npm install
 
-# Live Dev for Chrome browsers
-npm start
+# Compile Svelte
+npm run build
 ```
 
 
